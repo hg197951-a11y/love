@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Love You ❤️</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+}
+
+canvas{
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+#text{
+    position:absolute;
+    width:100%;
+    top:40px;
+    text-align:center;
+    font-size:60px;
+    color:#ff4d6d;
+    text-shadow:0 0 20px red;
+    font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<h1 id="text"></h1>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+// ---------- Typing Animation ----------
+const message = "I Love You ❤️";
+const text = document.getElementById("text");
+let t = 0;
+
+function typeText(){
+    if(t < message.length){
+        text.innerHTML += message.charAt(t);
+        t++;
+        setTimeout(typeText,180);
+    }
+}
+typeText();
+
+// ---------- Heart Animation ----------
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const colors = [
+"red","pink","orange","yellow",
+"cyan","lime","magenta","white"
+];
+
+const cx = canvas.width/2;
+const cy = canvas.height/2 + 120;
+
+function star(x,y,color){
+    ctx.strokeStyle=color;
+    for(let i=0;i<8;i++){
+        let a=i*Math.PI/4;
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        ctx.lineTo(
+            x+8*Math.cos(a),
+            y+8*Math.sin(a)
+        );
+        ctx.stroke();
+    }
+}
+
+let i=0;
+
+function drawHeart(){
+
+    if(i>=120) return;
+
+    let angle=i*2*Math.PI/120;
+
+    let x=16*Math.pow(Math.sin(angle),3)*15;
+
+    let y=(
+        13*Math.cos(angle)
+        -5*Math.cos(2*angle)
+        -2*Math.cos(3*angle)
+        -Math.cos(4*angle)
+    )*15;
+
+    let color=colors[Math.floor(Math.random()*colors.length)];
+
+    ctx.strokeStyle=color;
+
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+x,cy-y);
+    ctx.stroke();
+
+    star(cx+x,cy-y,color);
+
+    i++;
+
+    requestAnimationFrame(drawHeart);
+}
+
+drawHeart();
+
+</script>
+
+</body>
+</html>
